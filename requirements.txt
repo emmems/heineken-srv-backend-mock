@@ -1,0 +1,16 @@
+
+Outlet is about the specific place where a product is sold, salesrep needs to be able to manage the outlet and propose new products, solutions and check if everything in on place.
+
+outlet detail information
+- visit history
+- order history with order details
+- statistics
+- outlets nearby
+- notes
+- location
+- asset list
+- checklist
+- location
+- contact points
+- news about specific outlet
+- contract details

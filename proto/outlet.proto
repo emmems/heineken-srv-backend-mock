@@ -1,0 +1,447 @@
+syntax = "proto3";
+
+package outlet;
+
+option go_package = "srv-eazle-advise-mock/proto/outlet";
+
+import "google/protobuf/timestamp.proto";
+
+message OutletDetailsResponse {
+    repeated OutletDetails details = 1;
+}
+
+// Main outlet details message
+message OutletDetails {
+  string outlet_id = 1;
+  string name = 2;
+  string code = 3;
+  string thumbnail = 4;
+  OutletType type = 5;
+  OutletStatus status = 6;
+  Location location = 7;
+  repeated ContactPoint contact_points = 8;
+  repeated Visit visit_history = 9;
+  repeated Order order_history = 10;
+  OutletStatistics statistics = 11;
+  repeated OutletNearby outlets_nearby = 12;
+  repeated Note notes = 13;
+  repeated Asset asset_list = 14;
+  repeated ChecklistItem checklist = 15;
+  repeated News news = 16;
+  google.protobuf.Timestamp created_at = 17;
+  google.protobuf.Timestamp updated_at = 18;
+}
+
+// Outlet type enumeration
+enum OutletType {
+  OUTLET_TYPE_UNSPECIFIED = 0;
+  OUTLET_TYPE_RETAIL = 1;
+  OUTLET_TYPE_WHOLESALE = 2;
+  OUTLET_TYPE_DISTRIBUTOR = 3;
+  OUTLET_TYPE_PHARMACY = 4;
+  OUTLET_TYPE_SUPERMARKET = 5;
+  OUTLET_TYPE_CONVENIENCE_STORE = 6;
+  OUTLET_TYPE_RESTAURANT = 7;
+  OUTLET_TYPE_OTHER = 8;
+}
+
+// Outlet status enumeration
+enum OutletStatus {
+  OUTLET_STATUS_UNSPECIFIED = 0;
+  OUTLET_STATUS_ACTIVE = 1;
+  OUTLET_STATUS_INACTIVE = 2;
+  OUTLET_STATUS_SUSPENDED = 3;
+  OUTLET_STATUS_PENDING = 4;
+}
+
+// Location information
+message Location {
+  string address = 1;
+  string city = 2;
+  string state = 3;
+  string postal_code = 4;
+  string country = 5;
+  double latitude = 6;
+  double longitude = 7;
+}
+
+// Contact point information
+message ContactPoint {
+  string contact_id = 1;
+  string name = 2;
+  string role = 3;
+  string phone = 4;
+  string email = 5;
+  ContactType type = 6;
+  bool is_primary = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+enum ContactType {
+  CONTACT_TYPE_UNSPECIFIED = 0;
+  CONTACT_TYPE_OWNER = 1;
+  CONTACT_TYPE_MANAGER = 2;
+  CONTACT_TYPE_BUYER = 3;
+  CONTACT_TYPE_FINANCE = 4;
+  CONTACT_TYPE_OPERATIONS = 5;
+}
+
+// Visit history
+message Visit {
+  string visit_id = 1;
+  string sales_rep_id = 2;
+  string sales_rep_name = 3;
+  google.protobuf.Timestamp visit_date = 4;
+  VisitType visit_type = 5;
+  VisitStatus visit_status = 6;
+  string purpose = 7;
+  string summary = 8;
+  repeated string products_discussed = 9;
+  repeated VisitAction actions_taken = 10;
+  repeated string attachments = 11;
+  int32 duration_seconds = 12;
+}
+
+enum VisitType {
+  VISIT_TYPE_UNSPECIFIED = 0;
+  VISIT_TYPE_SALES_CALL = 1;
+  VISIT_TYPE_DELIVERY = 2;
+  VISIT_TYPE_SUPPORT = 3;
+  VISIT_TYPE_AUDIT = 4;
+  VISIT_TYPE_TRAINING = 5;
+}
+
+enum VisitStatus {
+  VISIT_STATUS_UNSPECIFIED = 0;
+  VISIT_STATUS_PLANNED = 1;
+  VISIT_STATUS_COMPLETED = 2;
+  VISIT_STATUS_CANCELLED = 3;
+  VISIT_STATUS_RESCHEDULED = 4;
+}
+
+message VisitAction {
+  string action_id = 1;
+  string description = 2;
+  ActionType type = 3;
+  ActionStatus status = 4;
+  google.protobuf.Timestamp due_date = 5;
+}
+
+enum ActionType {
+  ACTION_TYPE_UNSPECIFIED = 0;
+  ACTION_TYPE_FOLLOW_UP = 1;
+  ACTION_TYPE_PRODUCT_DEMO = 2;
+  ACTION_TYPE_PRICE_NEGOTIATION = 3;
+  ACTION_TYPE_DELIVERY_SCHEDULE = 4;
+  ACTION_TYPE_PAYMENT_COLLECTION = 5;
+}
+
+enum ActionStatus {
+  ACTION_STATUS_UNSPECIFIED = 0;
+  ACTION_STATUS_PENDING = 1;
+  ACTION_STATUS_IN_PROGRESS = 2;
+  ACTION_STATUS_COMPLETED = 3;
+  ACTION_STATUS_CANCELLED = 4;
+}
+
+// Order history
+message Order {
+  string order_id = 1;
+  string order_number = 2;
+  google.protobuf.Timestamp order_date = 3;
+  OrderStatus status = 4;
+  double total_amount = 5;
+  string currency = 6;
+  repeated OrderItem items = 7;
+  PaymentInfo payment_info = 8;
+  DeliveryInfo delivery_info = 9;
+  string sales_rep_id = 10;
+  string sales_rep_name = 11;
+  google.protobuf.Timestamp delivery_date = 12;
+  string notes = 13;
+}
+
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_PENDING = 1;
+  ORDER_STATUS_CONFIRMED = 2;
+  ORDER_STATUS_PROCESSING = 3;
+  ORDER_STATUS_SHIPPED = 4;
+  ORDER_STATUS_DELIVERED = 5;
+  ORDER_STATUS_CANCELLED = 6;
+  ORDER_STATUS_RETURNED = 7;
+}
+
+message OrderItem {
+  string product_id = 1;
+  string product_name = 2;
+  string sku = 3;
+  int32 quantity = 4;
+  double unit_price = 5;
+  double total_price = 6;
+  double discount_percentage = 7;
+  double discount_amount = 8;
+}
+
+message PaymentInfo {
+  PaymentMethod method = 1;
+  PaymentStatus status = 2;
+  google.protobuf.Timestamp payment_date = 3;
+  double amount_paid = 4;
+  double amount_due = 5;
+  string reference_number = 6;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CASH = 1;
+  PAYMENT_METHOD_CREDIT_CARD = 2;
+  PAYMENT_METHOD_BANK_TRANSFER = 3;
+  PAYMENT_METHOD_CHECK = 4;
+  PAYMENT_METHOD_CREDIT = 5;
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNSPECIFIED = 0;
+  PAYMENT_STATUS_PENDING = 1;
+  PAYMENT_STATUS_PAID = 2;
+  PAYMENT_STATUS_PARTIAL = 3;
+  PAYMENT_STATUS_OVERDUE = 4;
+  PAYMENT_STATUS_REFUNDED = 5;
+}
+
+message DeliveryInfo {
+  string delivery_address = 1;
+  google.protobuf.Timestamp scheduled_date = 2;
+  google.protobuf.Timestamp actual_date = 3;
+  DeliveryStatus status = 4;
+  string delivery_notes = 5;
+  string tracking_number = 6;
+}
+
+enum DeliveryStatus {
+  DELIVERY_STATUS_UNSPECIFIED = 0;
+  DELIVERY_STATUS_PENDING = 1;
+  DELIVERY_STATUS_IN_TRANSIT = 2;
+  DELIVERY_STATUS_DELIVERED = 3;
+  DELIVERY_STATUS_FAILED = 4;
+  DELIVERY_STATUS_RETURNED = 5;
+}
+
+// Outlet statistics
+message OutletStatistics {
+  double total_revenue_ytd = 1;
+  double total_revenue_last_year = 2;
+  double average_order_value = 3;
+  int32 total_orders_ytd = 4;
+  int32 total_orders_last_year = 5;
+  int32 total_visits_ytd = 6;
+  double revenue_growth_percentage = 7;
+  int32 days_since_last_order = 8;
+  int32 days_since_last_visit = 9;
+  repeated ProductStatistics top_products = 10;
+  repeated MonthlyRevenue monthly_revenue = 11;
+  CustomerSegment segment = 12;
+  CreditInfo credit_info = 13;
+}
+
+message ProductStatistics {
+  string product_id = 1;
+  string product_name = 2;
+  int32 quantity_sold = 3;
+  double revenue = 4;
+  int32 orders_count = 5;
+}
+
+message MonthlyRevenue {
+  int32 year = 1;
+  int32 month = 2;
+  double revenue = 3;
+  int32 orders_count = 4;
+}
+
+enum CustomerSegment {
+  CUSTOMER_SEGMENT_UNSPECIFIED = 0;
+  CUSTOMER_SEGMENT_PLATINUM = 1;
+  CUSTOMER_SEGMENT_GOLD = 2;
+  CUSTOMER_SEGMENT_SILVER = 3;
+  CUSTOMER_SEGMENT_BRONZE = 4;
+  CUSTOMER_SEGMENT_NEW = 5;
+}
+
+message CreditInfo {
+  double credit_limit = 1;
+  double credit_used = 2;
+  double credit_available = 3;
+  int32 payment_terms_days = 4;
+  CreditStatus status = 5;
+}
+
+enum CreditStatus {
+  CREDIT_STATUS_UNSPECIFIED = 0;
+  CREDIT_STATUS_GOOD = 1;
+  CREDIT_STATUS_WARNING = 2;
+  CREDIT_STATUS_OVERDUE = 3;
+  CREDIT_STATUS_BLOCKED = 4;
+}
+
+// Nearby outlets
+message OutletNearby {
+  string outlet_id = 1;
+  string name = 2;
+  OutletType type = 3;
+  double distance_km = 4;
+  Location location = 5;
+  bool is_competitor = 6;
+  string relationship = 7;
+  string thumbnail = 8;
+}
+
+// Notes
+message Note {
+  string note_id = 1;
+  string title = 2;
+  string content = 3;
+  NoteType type = 4;
+  string created_by = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  bool is_private = 8;
+  repeated string tags = 9;
+}
+
+enum NoteType {
+  NOTE_TYPE_UNSPECIFIED = 0;
+  NOTE_TYPE_GENERAL = 1;
+  NOTE_TYPE_SALES = 2;
+  NOTE_TYPE_SUPPORT = 3;
+  NOTE_TYPE_COMPLAINT = 4;
+  NOTE_TYPE_OPPORTUNITY = 5;
+  NOTE_TYPE_REMINDER = 6;
+}
+
+// Assets
+message Asset {
+  string asset_id = 1;
+  string name = 2;
+  AssetType type = 3;
+  string model = 4;
+  string serial_number = 5;
+  AssetStatus status = 6;
+  google.protobuf.Timestamp installation_date = 7;
+  google.protobuf.Timestamp last_maintenance_date = 8;
+  google.protobuf.Timestamp next_maintenance_date = 9;
+  string location_details = 10;
+  string condition = 11;
+  repeated AssetMaintenance maintenance_history = 12;
+}
+
+enum AssetType {
+  ASSET_TYPE_UNSPECIFIED = 0;
+  ASSET_TYPE_FREEZER = 1;
+  ASSET_TYPE_REFRIGERATOR = 2;
+  ASSET_TYPE_DISPLAY_UNIT = 3;
+  ASSET_TYPE_SIGNAGE = 4;
+  ASSET_TYPE_POS_SYSTEM = 5;
+  ASSET_TYPE_SHELVING = 6;
+  ASSET_TYPE_OTHER = 7;
+}
+
+enum AssetStatus {
+  ASSET_STATUS_UNSPECIFIED = 0;
+  ASSET_STATUS_ACTIVE = 1;
+  ASSET_STATUS_INACTIVE = 2;
+  ASSET_STATUS_MAINTENANCE = 3;
+  ASSET_STATUS_DAMAGED = 4;
+  ASSET_STATUS_RETIRED = 5;
+}
+
+message AssetMaintenance {
+  google.protobuf.Timestamp date = 1;
+  MaintenanceType type = 2;
+  string description = 3;
+  string technician = 4;
+  double cost = 5;
+}
+
+enum MaintenanceType {
+  MAINTENANCE_TYPE_UNSPECIFIED = 0;
+  MAINTENANCE_TYPE_ROUTINE = 1;
+  MAINTENANCE_TYPE_REPAIR = 2;
+  MAINTENANCE_TYPE_REPLACEMENT = 3;
+  MAINTENANCE_TYPE_UPGRADE = 4;
+}
+
+// Checklist
+message ChecklistItem {
+  string item_id = 1;
+  string title = 2;
+  string description = 3;
+  ChecklistCategory category = 4;
+  ChecklistStatus status = 5;
+  Priority priority = 6;
+  google.protobuf.Timestamp due_date = 7;
+  google.protobuf.Timestamp completed_date = 8;
+  string assigned_to = 9;
+  string completed_by = 10;
+  string notes = 11;
+}
+
+enum ChecklistCategory {
+  CHECKLIST_CATEGORY_UNSPECIFIED = 0;
+  CHECKLIST_CATEGORY_COMPLIANCE = 1;
+  CHECKLIST_CATEGORY_SAFETY = 2;
+  CHECKLIST_CATEGORY_QUALITY = 3;
+  CHECKLIST_CATEGORY_INVENTORY = 4;
+  CHECKLIST_CATEGORY_MAINTENANCE = 5;
+  CHECKLIST_CATEGORY_MARKETING = 6;
+}
+
+enum ChecklistStatus {
+  CHECKLIST_STATUS_UNSPECIFIED = 0;
+  CHECKLIST_STATUS_PENDING = 1;
+  CHECKLIST_STATUS_IN_PROGRESS = 2;
+  CHECKLIST_STATUS_COMPLETED = 3;
+  CHECKLIST_STATUS_OVERDUE = 4;
+  CHECKLIST_STATUS_SKIPPED = 5;
+}
+
+enum Priority {
+  PRIORITY_UNSPECIFIED = 0;
+  PRIORITY_LOW = 1;
+  PRIORITY_MEDIUM = 2;
+  PRIORITY_HIGH = 3;
+  PRIORITY_CRITICAL = 4;
+}
+
+// News about specific outlet
+message News {
+  string news_id = 1;
+  string title = 2;
+  string content = 3;
+  NewsType type = 4;
+  NewsSource source = 5;
+  google.protobuf.Timestamp published_date = 6;
+  string author = 7;
+  string url = 8;
+  repeated string tags = 9;
+  bool is_important = 10;
+}
+
+enum NewsType {
+  NEWS_TYPE_UNSPECIFIED = 0;
+  NEWS_TYPE_GENERAL = 1;
+  NEWS_TYPE_PROMOTION = 2;
+  NEWS_TYPE_PRODUCT_LAUNCH = 3;
+  NEWS_TYPE_POLICY_CHANGE = 4;
+  NEWS_TYPE_MARKET_UPDATE = 5;
+  NEWS_TYPE_COMPETITOR = 6;
+}
+
+enum NewsSource {
+  NEWS_SOURCE_UNSPECIFIED = 0;
+  NEWS_SOURCE_INTERNAL = 1;
+  NEWS_SOURCE_EXTERNAL = 2;
+  NEWS_SOURCE_OUTLET = 3;
+  NEWS_SOURCE_MARKET_RESEARCH = 4;
+}
