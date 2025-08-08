@@ -11,15 +11,27 @@ import (
 )
 
 type MockSettings struct {
-	AverageNotesList               int
-	AverageVisitHistory            int
-	AverageNumberOfOrders          int
-	AverageOrderItemsPerOrder      int
-	AverageTopProductsInStatistics int
-	AverageOutletsNearby           int
-	AverageAssetList               int
-	AverageChecklist               int
-	AverageNews                    int
+	AverageNotesList               int `json:"averageNotesList,omitempty"`
+	AverageVisitHistory            int `json:"averageVisitHistory,omitempty"`
+	AverageNumberOfOrders          int `json:"averageNumberOfOrders,omitempty"`
+	AverageOrderItemsPerOrder      int `json:"averageOrderItemsPerOrder,omitempty"`
+	AverageTopProductsInStatistics int `json:"averageTopProductsInStatistics,omitempty"`
+	AverageOutletsNearby           int `json:"averageOutletsNearby,omitempty"`
+	AverageAssetList               int `json:"averageAssetList,omitempty"`
+	AverageChecklist               int `json:"averageChecklist,omitempty"`
+	AverageNews                    int `json:"averageNews,omitempty"`
+}
+
+type MockSettingsOptional struct {
+	AverageNotesList               *int `json:"averageNotesList,omitempty"`
+	AverageVisitHistory            *int `json:"averageVisitHistory,omitempty"`
+	AverageNumberOfOrders          *int `json:"averageNumberOfOrders,omitempty"`
+	AverageOrderItemsPerOrder      *int `json:"averageOrderItemsPerOrder,omitempty"`
+	AverageTopProductsInStatistics *int `json:"averageTopProductsInStatistics,omitempty"`
+	AverageOutletsNearby           *int `json:"averageOutletsNearby,omitempty"`
+	AverageAssetList               *int `json:"averageAssetList,omitempty"`
+	AverageChecklist               *int `json:"averageChecklist,omitempty"`
+	AverageNews                    *int `json:"averageNews,omitempty"`
 }
 
 // Sample data pools for randomization

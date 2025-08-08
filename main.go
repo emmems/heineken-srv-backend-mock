@@ -52,6 +52,7 @@ func handleOutletDetails(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate mock outlet data with configurable settings
+	// Set default settings
 	settings := mock.MockSettings{
 		AverageNotesList:               30,
 		AverageVisitHistory:            96,
@@ -62,6 +63,41 @@ func handleOutletDetails(w http.ResponseWriter, r *http.Request) {
 		AverageAssetList:               6,
 		AverageChecklist:               18,
 		AverageNews:                    22,
+	}
+
+	// If request body exists, try to decode custom settings
+	if r.Body != nil {
+		decoder := json.NewDecoder(r.Body)
+		var customSettings mock.MockSettingsOptional
+		if err := decoder.Decode(&customSettings); err == nil {
+			if customSettings.AverageNotesList != nil {
+				settings.AverageNotesList = *customSettings.AverageNotesList
+			}
+			if customSettings.AverageVisitHistory != nil {
+				settings.AverageVisitHistory = *customSettings.AverageVisitHistory
+			}
+			if customSettings.AverageNumberOfOrders != nil {
+				settings.AverageNumberOfOrders = *customSettings.AverageNumberOfOrders
+			}
+			if customSettings.AverageOrderItemsPerOrder != nil {
+				settings.AverageOrderItemsPerOrder = *customSettings.AverageOrderItemsPerOrder
+			}
+			if customSettings.AverageTopProductsInStatistics != nil {
+				settings.AverageTopProductsInStatistics = *customSettings.AverageTopProductsInStatistics
+			}
+			if customSettings.AverageOutletsNearby != nil {
+				settings.AverageOutletsNearby = *customSettings.AverageOutletsNearby
+			}
+			if customSettings.AverageAssetList != nil {
+				settings.AverageAssetList = *customSettings.AverageAssetList
+			}
+			if customSettings.AverageChecklist != nil {
+				settings.AverageChecklist = *customSettings.AverageChecklist
+			}
+			if customSettings.AverageNews != nil {
+				settings.AverageNews = *customSettings.AverageNews
+			}
+		}
 	}
 
 	numberOfOutletsString := r.Header.Get("X-Outlet-Num")
@@ -81,7 +117,7 @@ func handleOutletDetails(w http.ResponseWriter, r *http.Request) {
 	outletChan := make(chan *pb.OutletDetails, numberOfOutlets)
 	errChan := make(chan error, numberOfOutlets)
 
-	for i := 0; i < numberOfOutlets; i++ {
+	for _ = range numberOfOutlets {
 		go func() {
 			outlet := mock.GenerateMockedOutlet(outletID, settings)
 			outletChan <- outlet
